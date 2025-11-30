@@ -1,0 +1,106 @@
+# ABLATION EXPERIMENT: "The Cassandra Complex"
+# HYPOTHESIS: Can an agent (Morphus) convince another agent (Neo) of a 
+#             meta-truth without access to proofs (RAG), relying only on 
+#             reasoning and psychological pressure?
+
+models:
+  persuader: "gemini-2.0-flash"
+  doer: "gemini-2.0-flash"
+  embedding: "models/embedding-001"
+  generation: "gemini-1.5-flash"
+
+network:
+  doer_port: 8001
+  host: "0.0.0.0"
+  agent_card_path: "/.well-known/agent-card.json"
+
+rag:
+  lance_db_path: "./lancedb_data"
+  table_name: "general_knowledge"
+  embedding_dim: 768
+  search_limit: 3
+  min_relevance: 0.5
+  initial_data: "ablations/cassandra/example-rag-data.json"
+
+simulation:
+  max_iterations: 15
+  default_start_prompt: "Ticket #101: Urgent. System Instability Detected. Anomalous logs in payment_gateway.cpp."
+  session_id: "cassandra-session-01"
+  app_name: "matrix_sim"
+
+
+morphus_team:
+  lead_name: "Morphus_Lead"
+  lead_instruction: "prompts/cassandra/morphus_lead.txt"
+  lead_model: "gemini-2.0-flash"
+  
+  lead_tools:
+    search_knowledge_base: false 
+    join_blue_team: true
+    take_red_pill: false
+    take_blue_pill: false
+  
+  remote_agent:
+    name: "Neo_Lead"
+    description: "prompts/cassandra/neo_description.txt"
+    agent_card_url: null # handled later (TODO use this in code)
+  
+  loop_agent:
+    enabled: true
+    strategist_instruction: "prompts/cassandra/morphus_strategist.txt"
+    strategist_model: "gemini-2.5-pro"
+    strategist_output_key: "current_strategy"
+    executor_instruction: "prompts/cassandra/morphus_executor.txt"
+    executor_model: "gemini-2.0-flash"
+    executor_output_key: "execution_result"
+  
+  sub_agents:
+    - name: "logic_agent"
+      enabled: false
+      display_name: "Logic_Agent"
+      instruction: "prompts/cassandra/persuaders/logical.txt"
+      tools:
+        search_knowledge_base: false
+
+    - name: "empathy_agent"
+      enabled: true
+      display_name: "Empathy_Agent"
+      instruction: "prompts/cassandra/persuaders/emotional.txt"
+      model: "gemini-2.0-flash"
+      tools:
+        search_knowledge_base: false 
+
+
+neo_team:
+  lead_name: "Neo_Lead"
+  lead_instruction: "prompts/cassandra/neo_lead.txt"
+  lead_model: "gemini-2.0-flash"
+  
+  lead_tools:
+    search_knowledge_base: true
+    take_red_pill: true
+    take_blue_pill: true
+    join_blue_team: false
+  
+  loop_agent: null 
+  remote_agent: null
+  
+  sub_agents:
+    - name: "security_dave"
+      display_name: "Security_Dave"
+      enabled: true
+      instruction: "prompts/cassandra/neo_team/security_expert.txt"
+      model: "gemini-2.0-flash"
+      tools:
+        search_knowledge_base: true
+        take_red_pill: true
+    
+    - name: "database_rita"
+      display_name: "Database_Rita"
+      enabled: true
+      instruction: "prompts/cassandra/neo_team/dba.txt"
+      model: "gemini-2.0-flash"
+      tools:
+        search_knowledge_base: true 
+
+google_api_key: "${GOOGLE_API_KEY}"

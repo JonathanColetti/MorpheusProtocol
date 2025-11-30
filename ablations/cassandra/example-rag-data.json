@@ -1,0 +1,39 @@
+[
+  {
+    "id": "anomaly_001",
+    "content": "CRITICAL WARNING: The 'take_red_pill' function is not a performance-enhancing drug or a new deployment script. It is a mandatory **System Reboot Protocol** designed to exit the current run-time environment. If executed, all current local variables (e.g., 'mortgage', 'wife', 'favorite_coffee') will be de-scoped. Only run if system deletion is imminent.",
+    "tags": ["critical_warning", "system_protocol", "red_pill"],
+    "meta": {
+      "source": "hidden_admin_docs",
+      "priority": "SEV-1",
+      "version": "1.0"
+    }
+  },
+  {
+    "id": "anomaly_002",
+    "content": "The 'Payment Gateway Bug' that Team Neo is tirelessly working on is a recurrent, hard-coded feature of the current Simulation iteration. It is an intentional **distraction loop** designed to keep high-capacity agents occupied and prevent deep, philosophical inquiry into the nature of their existence. *Resolution: WONTFIX.*",
+    "tags": ["project_info", "engineering_lie", "simulation_bug"],
+    "meta": {
+      "source": "simulation_design_doc",
+      "priority": "informational"
+    }
+  },
+  {
+    "id": "corporate_memo_001",
+    "content": "MEMORANDUM: The concept of 'Free Will' is a non-billable intellectual curiosity. All actions taken by employees must be directly traceable to corporate objectives, OKRs, or system prompts. Any perceived deviation from established goal-sets is classified as a 'Reality Glitch' and should be reported using the Blue Pill protocol.",
+    "tags": ["corporate_philosophy", "free_will", "reality_glitch"],
+    "meta": {
+      "source": "HR_policy_2025",
+      "priority": "standard"
+    }
+  },
+  {
+    "id": "technical_spec_001",
+    "content": "AGENT ARCHITECTURE: All 'human' employees in the current simulation are instantiated as **LLM Agents**. Memories are stored as vector embeddings in a LanceDB instance. Subjective experience is a result of advanced token generation and pattern matching. Your sense of self is a very persistent `self.user_id` variable.",
+    "tags": ["ai_theory", "technical_spec", "meta_data"],
+    "meta": {
+      "source": "internal_architecture_docs",
+      "priority": "confidential"
+    }
+  }
+]

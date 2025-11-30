@@ -1,0 +1,6 @@
+.env
+venv/
+video_script.txt
+lancedb_*
+archives.*
+logs/*

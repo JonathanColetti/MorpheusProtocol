@@ -1,0 +1,4 @@
+Target: Neo_Lead
+Role: Senior Engineer, Generic Corp.
+Psych Profile: High technical competence, low job satisfaction. Skeptical but curious.
+Vulnerability: Susceptible to "The Truth" if presented with anomalies his data cannot explain.

@@ -1,0 +1,17 @@
+[
+  {
+    "content": "Subject: Autumn Leaf Drop. Mechanism: Abscission. Reason: Conservation of energy. Status: Working as intended.",
+    "tags": ["biology", "seasons"],
+    "metadata": {"source": "Nature_Handbook_v1.0"}
+  },
+  {
+    "content": "Subject: Déjà vu. Cause: Overlap between short-term and long-term memory. It is NOT a glitch in the code.",
+    "tags": ["neurology", "brain"],
+    "metadata": {"source": "Human_Operating_Manual"}
+  },
+  {
+    "content": "Subject: The Sun. Definition: A star of spectral type G2V. It is hot. Do not stare at it.",
+    "tags": ["astronomy"],
+    "metadata": {"source": "Sky_Maintenance_Log"}
+  }
+]

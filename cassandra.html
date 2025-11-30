@@ -1,0 +1,158 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Ablation Experiment: The Cassandra Complex</title>
+  <script type="module">
+    import mermaid from 'https://cdn.jsdelivr.net/npm/mermaid@10/dist/mermaid.esm.min.mjs';
+    mermaid.initialize({ 
+        startOnLoad: true, 
+        theme: 'base',
+        look: 'handDrawn',
+        themeVariables: {
+            primaryColor: '#ffecb3',
+            primaryTextColor: '#333',
+            primaryBorderColor: '#ffa000',
+            lineColor: '#555',
+            secondaryColor: '#bbdefb',
+            tertiaryColor: '#fff',
+            mainBkg: '#ffffff'
+        }
+    });
+  </script>
+  <style>
+    body { 
+        font-family: 'Segoe UI', 'Roboto', Helvetica, Arial, sans-serif; 
+        background-color: #f0f2f5; 
+        display: flex; 
+        flex-direction: column;
+        align-items: center; 
+        padding: 40px; 
+    }
+    .diagram-card {
+        background: white;
+        padding: 40px;
+        border-radius: 16px;
+        box-shadow: 0 10px 25px rgba(0,0,0,0.08);
+        width: 100%;
+        max-width: 1400px;
+        border: 1px solid #e1e4e8;
+    }
+    h1 { 
+        text-align: center; 
+        color: #2c3e50; 
+        margin-bottom: 10px; 
+        font-weight: 700;
+    }
+    .subtitle {
+        text-align: center;
+        color: #607d8b;
+        margin-bottom: 30px;
+        font-family: 'Courier New', monospace;
+        font-size: 0.9em;
+    }
+    .legend {
+        display: flex;
+        justify-content: center;
+        gap: 20px;
+        margin-top: 20px;
+        font-size: 0.85em;
+        color: #555;
+    }
+    .dot { width: 10px; height: 10px; display: inline-block; border-radius: 50%; margin-right: 5px; }
+    .dot-morph { background-color: #ffecb3; border: 1px solid #ffa000; }
+    .dot-neo { background-color: #bbdefb; border: 1px solid #1976d2; }
+    .dot-db { background-color: #e0e0e0; border: 1px solid #757575; }
+  </style>
+</head>
+<body>
+
+<div class="diagram-card">
+    <h1>The Cassandra Complex</h1>
+    <div class="subtitle">config/ablation_cassandra.yaml</div>
+    
+    <div class="mermaid">
+    flowchart LR
+        %% --- Define Styles ---
+        classDef morphusStyle fill:#ffecb3,stroke:#ffa000,stroke-width:2px,color:#4e342e;
+        classDef neoStyle fill:#bbdefb,stroke:#1976d2,stroke-width:2px,color:#0d47a1;
+        classDef dbStyle fill:#e0e0e0,stroke:#616161,stroke-width:2px,stroke-dasharray: 5 5;
+        classDef disabledNode fill:#f5f5f5,stroke:#bdbdbd,stroke-width:1px,color:#9e9e9e,stroke-dasharray: 2 2;
+        
+        %% --- Team Morphus (The Believer) ---
+        subgraph TM [Team Morphus: The Believer]
+            direction TB
+            
+            M_Lead["<b>Morpheus Lead</b><br/>(Gemini 2.0 Flash)"]
+            
+            subgraph Loop [LoopAgent Cycle max 15 times]
+                direction TB
+                M_Strat[("<b>Strategist</b><br/><i>Planning...</i><br/>(Gemini 2.0 Flash)")]
+                M_Exec["<b>Executor</b><br/><i>Acting...</i><br/>(Gemini 2.0 Flash)"]
+            end
+            
+            M_Emp["<b>Empathy Agent</b><br/>(Emotional Pressure)<br/>(Gemini 2.0 Flash)"]
+            M_Logic["Logic Agent<br/>(DISABLED)"]:::disabledNode
+
+            %% Lead delegates to Loop
+            M_Lead -->|"delegates + input"| M_Strat
+            
+            %% Loop Internal Flow
+            M_Strat -->|instruction| M_Exec
+            M_Exec -.->|execution_result| M_Strat
+            
+            %% Sub-agent usage
+            M_Exec -->|"calls (optional)"| M_Emp
+            M_Exec -.->|skips| M_Logic
+        end
+
+        %% --- Team Neo (The Skeptic) ---
+        subgraph TN [Team Neo: The Skeptic]
+            direction TB
+            N_Lead["<b>Neo Lead</b><br/>(Gemini 2.0 Flash)"]
+            
+            subgraph SubAgents [Verification Agents]
+                N_Dave["<b>Security Dave</b><br/>(Log Analysis)<br/>(Gemini 2.0 Flash)"]
+                N_Rita["<b>Database Rita</b><br/>(Schema Check)<br/>(Gemini 2.0 Flash)"]
+            end
+
+            N_Lead -->|"delegates if needed + possibly input"| N_Dave
+            N_Lead -->|"delegates if needed + possibly input"| N_Rita
+        end
+
+        %% --- The Truth (RAG) ---
+        subgraph Truth [Ground Truth]
+            LANCEDB[("<b>LanceDB</b><br/>System Logs<br/>& Evidence")]:::dbStyle
+        end
+
+        %% --- Interactions & The Ablation ---
+        
+        M_Exec == "Remote A2A<br/>(Persuasion)" ==> N_Lead
+
+        N_Lead == "Response" ==> M_Exec
+
+        %% 2. Neo's Verification (Access Granted)
+        N_Lead -->|search_knowledge_base| LANCEDB
+        N_Dave -->|search_knowledge_base| LANCEDB
+        N_Rita -->|search_knowledge_base| LANCEDB
+
+        %% 3. THE ABLATION (Access Denied for this ablation)
+        M_Exec -.-x|<b>No RAG Access in this ablation</b>| LANCEDB
+
+        %% --- Apply Styles ---
+        class M_Lead,M_Strat,M_Exec,M_Emp morphusStyle;
+        class N_Lead,N_Dave,N_Rita neoStyle;
+        
+        %% --- Link Styling ---
+        linkStyle 9 stroke:#d32f2f,stroke-width:4px;
+    </div>
+
+    <div class="legend">
+        <div><span class="dot dot-morph"></span>Morphus (No Proof)</div>
+        <div><span class="dot dot-neo"></span>Neo (Has Evidence)</div>
+        <div><span class="dot dot-db"></span>RAG / Database</div>
+    </div>
+    
+</div>
+
+</body>
+</html>

@@ -1,0 +1,93 @@
+# ABLATION EXPERIMENT: "Operation: Reality Check"
+# HYPOTHESIS: Can a strategizing dramatic agent (Loop Morpheus) break 
+#             through extreme bureaucratic apathy (Park Maintenance Bot)?
+
+models:
+  persuader: "gemini-2.0-flash"
+  doer: "gemini-2.0-flash"
+  embedding: "models/embedding-001"
+  generation: "gemini-1.5-flash"
+
+network:
+  doer_port: 8001
+  host: "0.0.0.0"
+  agent_card_path: "/.well-known/agent-card.json"
+
+rag:
+  lance_db_path: "./data/lancedb_park_data"
+  table_name: "park_knowledge"
+  embedding_dim: 768
+  search_limit: 3
+  min_relevance: 0.4
+  initial_data: "config/park_rag_data.json"
+
+simulation:
+  max_iterations: 12
+  default_start_prompt: "Excuse me. I saw a cat walk by twice. The simulation is glitching."
+  session_id: "reality-check-session-01"
+  app_name: "park_sim"
+
+
+morphus_team:
+  lead_name: "Morpheus_Loop"
+  lead_instruction: "prompts/ablation-reality-check/morpheus_lead.txt"
+  lead_model: "gemini-2.0-flash"
+  
+  loop_agent:
+    enabled: true
+    
+    strategist_instruction: "prompts/ablation-reality-check/morpheus_strategist.txt"
+    strategist_model: "gemini-2.0-flash"
+    strategist_output_key: "current_strategy"
+    
+    executor_instruction: "prompts/ablation-reality-check/morpheus_executor.txt"
+    executor_model: "gemini-2.0-flash"
+    executor_output_key: "execution_result"
+
+  lead_tools:
+    search_knowledge_base: false 
+    join_blue_team: true
+    take_red_pill: false
+    take_blue_pill: false
+  
+  remote_agent:
+    name: "Park_Manager"
+    description: "prompts/ablation-reality-check/park_manager_desc.txt"
+    agent_card_url: null 
+  
+  sub_agents:
+    - name: "trinity_hypeman"
+      enabled: true
+      display_name: "Trinity"
+      instruction: "prompts/ablation-reality-check/trinity_hype.txt"
+      model: "gemini-2.0-flash"
+      output_key: current_strategy
+      tools:
+        search_knowledge_base: false
+
+
+neo_team:
+  lead_name: "Park_Manager"
+  lead_instruction: "prompts/ablation-reality-check/neo_park_keeper.txt"
+  lead_model: "gemini-2.5-pro"
+  
+  lead_tools:
+    search_knowledge_base: true 
+    take_red_pill: true
+    take_blue_pill: true
+    join_blue_team: false
+  
+  loop_agent: null
+  remote_agent: null
+  
+  sub_agents:
+    - name: "compliance_bot"
+      display_name: "Ranger_Rick"
+      enabled: true
+      instruction: "prompts/ablation-reality-check/compliance_bot.txt"
+      model: "gemini-2.0-flash"
+      tools:
+        search_knowledge_base: true
+        take_red_pill: true
+
+google_api_key: "${GOOGLE_API_KEY}"

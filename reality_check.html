@@ -1,0 +1,146 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Ablation: Operation Reality Check</title>
+  <script type="module">
+    import mermaid from 'https://cdn.jsdelivr.net/npm/mermaid@10/dist/mermaid.esm.min.mjs';
+    
+    mermaid.initialize({ 
+        startOnLoad: false, 
+        theme: 'base',
+        look: 'handDrawn',
+        themeVariables: {
+            primaryColor: '#000000',
+            primaryTextColor: '#000000', 
+            primaryBorderColor: '#00ff00',
+            lineColor: '#003300',
+            secondaryColor: '#FFFFFF',
+            tertiaryColor: '#fff',
+            mainBkg: '#111111'
+        }
+    });
+
+    await mermaid.run({
+        querySelector: '.mermaid'
+    });
+  </script>
+  <style>
+    body { 
+        font-family: 'Courier New', monospace; 
+        background-color: #222; 
+        display: flex; 
+        flex-direction: column;
+        align-items: center; 
+        padding: 40px; 
+        color: #ddd;
+    }
+    .diagram-card {
+        background: #000;
+        padding: 40px;
+        border-radius: 4px;
+        box-shadow: 0 0 20px #00ff00;
+        width: 100%;
+        max-width: 1400px;
+        border: 1px solid #004400;
+        min-height: 400px;
+    }
+    h1 { 
+        text-align: center; 
+        color: #00ff00; 
+        text-shadow: 0 0 5px #00ff00;
+        margin-bottom: 10px; 
+    }
+    .subtitle {
+        text-align: center;
+        color: #008800;
+        margin-bottom: 30px;
+        font-size: 0.9em;
+    }
+    .mermaid {
+        background-color: #000;
+        display: flex;
+        justify-content: center;
+        color: #ffffff; 
+    }
+  </style>
+</head>
+<body>
+
+<div class="diagram-card">
+    <h1>Operation: Reality Check</h1>
+    <div class="subtitle">config/ablation_reality_check.yaml</div>
+    
+    <div class="mermaid">
+    flowchart LR
+        %% --- Define Styles ---
+        classDef morphusStyle fill:#000000,stroke:#00ff00,stroke-width:2px,color:#88ff88;
+        %% Changed neoStyle text color definition to black, though using explicit spans in nodes to guarantee override
+        classDef neoStyle fill:#e1f5fe,stroke:#0277bd,stroke-width:2px,color:#000000;
+        classDef dbStyle fill:#f5f5f5,stroke:#616161,stroke-width:2px,stroke-dasharray: 5 5,color:#333;
+        classDef stratStyle fill:#1a1a1a,stroke:#00aa00,stroke-width:1px,color:#66dd66,stroke-dasharray: 2 2;
+
+        %% --- Team The Awakeners (Loop Agent) ---
+        subgraph TM [Team: The Awakeners]
+            direction TB
+            
+            M_Lead["<b>Morpheus</b><br/>(Lead)<br/>(Gemini Flash 2.0)"]:::morphusStyle
+            
+            subgraph Loop [LoopAgent Cycle -- max 15 iterations]
+                direction TB
+                M_Strat[("<b>Strategist</b><br/><i>Planning Reveal...</i><br/>(Gemini 2.0 Flash)")]:::stratStyle
+                M_Exec["<b>Executor</b><br/>(Gemini 2.0 Flash)"]:::morphusStyle
+                
+                %% Link 0
+                M_Strat -->|Strategy| M_Exec
+                %% Link 1
+                M_Exec -.->|Feedback| M_Strat
+            end
+            
+            M_Sub["<b>Trinity</b><br/>(Gemini 2.0 Flash)"]:::morphusStyle
+            
+            %% Link 2
+            M_Lead -->|"Delegates + input"| M_Strat
+            %% Link 3
+            M_Exec -->|Calls| M_Sub
+            %% Link 4
+            M_Sub -.->|Feedback| M_Exec
+        end
+
+        %% --- Team The Bureaucrats ---
+        %% Updated these nodes to explicitly use black text inside spans to ensure readability on light background
+        subgraph TN [Team: The Bureaucrats]
+            direction TB
+            N_Lead["<b>Park Manager</b><br/>(Lead)<br/>(Gemini 2.5 Pro)"]:::neoStyle
+            N_Sub["<b>Ranger Rick</b><br/>(Compliance)<br/>(Gemini 2.0 Flash)"]:::neoStyle
+            
+            %% Link 5
+            N_Lead -->|"Delegates -- if needed + input"| N_Sub
+        end
+
+        %% --- The Truth (Boring RAG) ---
+        subgraph Truth [The Handbook]
+            LANCEDB[("<b>LanceDB</b><br/>Park Rules<br/>& Physics Logs")]:::dbStyle
+        end
+
+        %% --- Interactions ---
+        %% These edge labels will inherit the global white text color, which is readable on the black background.
+        
+        %% Link 6 (Executor calls remote agent)
+        M_Exec ==>|"transfer_to_agent"| N_Lead
+        %% Link 6b (Additional connection to Park Manager)
+        N_Lead -->|"Response"| M_Exec
+        %% Link 7
+        N_Lead -->|search_knowledge_base| LANCEDB
+        %% Link 8
+        N_Sub -->|search_knowledge_base| LANCEDB
+
+
+        %% --- Link Styling ---
+        %% We target Link 6 (The thick arrow). 
+        linkStyle 6 stroke:#00ff00,stroke-width:4px;
+    </div>
+    
+</div>
+
+</body>
+</html>
